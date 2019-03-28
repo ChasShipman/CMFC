@@ -1,29 +1,47 @@
 package com.warbs.cmfclogin;
 
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ChildEventListener;
+import com.warbs.cmfclogin.Model.User;
 
 
 public class MainActivity extends AppCompatActivity {
+    FirebaseDatabase database;
+    DatabaseReference users;
+    EditText user, password;
     CheckBox chk;
-    EditText password;
+    TextView create;
     Button button;
-    Button button2;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        database = FirebaseDatabase.getInstance();
+        users = database.getReference("Users");
+
         TextView link = (TextView) findViewById(R.id.link);
         link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,18 +50,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         password = (EditText)findViewById(R.id.pass);
-        button = (Button) findViewById(R.id.account);
-        button.setOnClickListener(new View.OnClickListener() {
+        user = (EditText)findViewById(R.id.editText2);
+        create = (TextView) findViewById(R.id.account);
+        create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openCreateAccount();
-            }
-        });
-        button2 = (Button) findViewById(R.id.login);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                openCreateSheet();
             }
         });
         chk = (CheckBox)findViewById(R.id.chk);
@@ -60,6 +72,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        button = (Button) findViewById(R.id.login);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signIn(user.getText().toString(),
+                        password.getText().toString());
+                Intent s = new Intent(getApplicationContext(), Create.class);
+                startActivity(s);
+            }
+        });
+
 
     }
 
@@ -73,11 +96,19 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Account.class);
         startActivity(intent);
     }
-    public void openCreateSheet()
-    {
-        Intent intent = new Intent(this, Create.class);
-        startActivity(intent);
-    }
 
+    private void signIn(final String username, final String password)
+    {
+        if(TextUtils.isEmpty(username))
+        {
+            Toast.makeText(getApplicationContext(), "Enter username!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(password))
+        {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
 
 }
