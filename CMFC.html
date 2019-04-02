@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>CMFC</title>
+<meta charset=utf-8 />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!--Vexflow-->
+<script src="jquery-1.6.2.min.js"></script>
+<script src="vexflow.js"></script>
+
+<!--jQuery plugin to throttle slider event-->
+<script src="jquery.ba-throttle-debounce.min.js"></script>
+
+<!--jQuery Mobile Framework-->
+<link rel="stylesheet" href="jquery.mobile-1.0b2.min.css" />
+<script src="jquery.mobile-1.0b2.min.js"></script>
+
+<!--custom script-->
+<script src="CMFC.js"></script>
+
+<!--custom style-->
+<link rel="stylesheet" href="style.css" />
+
+</head>
+
+<body>
+<div data-role="page">
+
+	<div data-role="header" data-theme="b">
+		<h1>CMFC</h1>
+	</div>
+	
+	<div data-role="content">
+		<div class="content-primary center-wrapper">
+					
+			<canvas id="score" height="175" width="600"></canvas>
+			<div data-role="fieldcontain">
+				<input type="range" name="canvas-slider" id="canvas-slider" value="0" min="0" max="550"  />
+			</div>
+			
+		</div>
+		
+		<div class="content-secondary">
+		
+			<div data-role="fieldcontain">
+				<label for="select-note-name" class="select">note name:</label>
+				<select name="select-note-name" id="select-note-name" data-native-menu="false">
+					<option value="A">A</option>
+					<option value="B">B</option>
+					<option value="C">C</option>
+					<option value="D">D</option>
+					<option value="E">E</option>
+					<option value="F">F</option>
+					<option value="G">G</option>
+				</select>
+			</div>
+			
+			<div data-role="fieldcontain">
+				<label for="select-note-accidental" class="select">accidental:</label>
+				<select name="select-note-accidental" id="select-note-accidental" data-native-menu="false">
+					<option value="none">none</option>
+					<option value="#">sharp</option>
+					<option value="b">flat</option>
+				</select>
+			</div>
+	
+
+			<div data-role="fieldcontain">
+				<label for="select-note-duration" class="select">duration:</label>
+				<select name="select-note-duration" id="select-note-duration" data-native-menu="false">
+					<option value="16">sixteenth</option>
+					<option value="8">eighth</option>
+					<option value="q">quarter</option>
+					<option value="h">half</option>
+					<option value="w">whole</option>
+				</select>
+			</div>			
+			<fieldset class="ui-grid-a">
+				<div class="ui-block-a"><button id="deleteNote" data-theme="b">delete note</button></div>
+				<div class="ui-block-b"><button id="addNote" data-theme="b">add/edit note</button></div>
+			</fieldset>
+	
+		</div>	
+	</div>
+	
+</div>	
+</body>
+</html>

@@ -1,17 +1,17 @@
 // using "pageshow" jquery mobile event for doc ready since pageCreate() has a bug w/ select menus - https://github.com/jquery/jquery-mobile/issues/1055
-$(document).on("pageshow", function(){
+$(document).bind("pageshow", function(){
 	
+	//identifiers
 	var canvas = $("#score")[0],
-		canvasOffset = $("#score").offset(),
+		canvasOffset = $("#score").offset(), //returns offset coordinates of staff
 		canvasSlider = $('#canvas-slider'),
 		selectNoteName = $('#select-note-name'),
-		selectNoteOctave = $('#select-note-octave'),
 		selectNoteAccidental = $('#select-note-accidental'),
 		selectNoteDuration = $('#select-note-duration');
 		
-		
+	//standard lines needed for vexflow with canvas we have the option of saving as a .png or .jpg
 	var renderer = new Vex.Flow.Renderer(canvas, Vex.Flow.Renderer.Backends.CANVAS);
-	
+	//context for vexflow staff
 	var ctx = renderer.getContext();
 	
 	var staff, 
@@ -20,8 +20,8 @@ $(document).on("pageshow", function(){
 		noteOffsetLeft, 
 		tickIndex = 0, 
 		noteIndex = 0, 
-		numBeats = 4, 
-		beatValue = 4, //this should be user input  
+		numBeats = 4, //needs to be user input enabled = $('#select-time-signature'); perhaps
+		beatValue = 4, 
 		cursorHeight = 150;
 	
 	// create notes array for storing music score in vexflow format
@@ -31,6 +31,7 @@ $(document).on("pageshow", function(){
 	highlightNote();
 	drawStave();
 	
+	
 	// set default values for select menus
 	var selectNoteName = $("select#select-note-name");
 	selectNoteName[0].selectedIndex = 2;
@@ -39,10 +40,6 @@ $(document).on("pageshow", function(){
 	var selectNoteAccidental = $("select#select-note-accidental");
 	selectNoteAccidental[0].selectedIndex = 0;
 	selectNoteAccidental.selectmenu("refresh");
-	
-	var selectNoteOctave = $("select#select-note-octave");
-	selectNoteOctave[0].selectedIndex = 1;
-	selectNoteOctave.selectmenu("refresh");
 	
 	var selectNoteDuration = $("select#select-note-duration");
 	selectNoteDuration[0].selectedIndex = 2;
@@ -55,11 +52,7 @@ $(document).on("pageshow", function(){
 	// updates canvas offset position on resize event for canvas mouse clicks 
 	$(window).bind( "throttledresize", setCanvasOffset );
 
-
-
-
-//CANVAS SLIDER
-//-----------------------------------------------------------
+//-------SLIDER---------------------------------------
 	// canvas slider used to translate() the origin of the canvas for horizontal scrolling
 	canvasSlider.change($.throttle( 100, function() {
 
@@ -72,12 +65,12 @@ $(document).on("pageshow", function(){
 		highlightNote();
 		drawStave();
 
-		if (notes.length > 0) {
+		if (notes.length > 0) { //redraws notes after coordinates have been updated
 			drawNotes();
 		}
 		
 	}));
-//-----------------------------------------------------------
+//----------------------------------------------------
 	
 	$("#addNote").click(function () {
 		var vexNote = parseNoteInput();
@@ -179,8 +172,8 @@ $(document).on("pageshow", function(){
 	function parseNoteInput() {
 	
 		var note_acc = (selectNoteAccidental.val() != "none") ? selectNoteAccidental.val() : "";
-		
-		var noteObj = { keys: [selectNoteName.val().toLowerCase() + note_acc + "/" + selectNoteOctave.val()], duration: selectNoteDuration.val(), accidental: selectNoteAccidental.val() };
+								//A,B,C,D,E,D,G as lowercase 		5 for the 5th octave
+		var noteObj = { keys: [selectNoteName.val().toLowerCase() + note_acc + "/" + 5], duration: selectNoteDuration.val(), accidental: selectNoteAccidental.val() };
 		
 		return noteObj;
 	}
@@ -283,13 +276,13 @@ $(document).on("pageshow", function(){
 		
 		stave = new Vex.Flow.Stave(10, 20, staveSize);
 
-		//stave.addClef("treble");
+		stave.addClef("treble");
 		
 		// add time
 		stave.addTimeSignature(numBeats + "/" + beatValue);
 		
 		// add key
-		//stave.addKeySignature("C");
+		stave.addKeySignature("C");
 		
 		// calc offset for first note - accounts for pixels used by treble clef & time signature & key signature
 		noteOffsetLeft = stave.start_x + stave.glyph_start_x;
@@ -374,11 +367,9 @@ $(document).on("pageshow", function(){
 		
 	}
 	
-	
 	function drawStave() {
 		stave.setContext(ctx).draw();
 	}
-	
 	
 	function drawNotes() {
 		voice.draw(ctx, stave);
@@ -387,5 +378,4 @@ $(document).on("pageshow", function(){
 	function setCanvasOffset() {
 		canvasOffset = $("#score").offset();
 	}
-	
 });
