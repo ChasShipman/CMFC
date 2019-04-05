@@ -15,7 +15,9 @@ Instructions on JUnit tests for CMFC Navigation:
           3. Build: Build Bundle
           4. Build: Rebuild Project
   5. repeat step 4 for RecyclerActivityTest  
-  Instructions on JUnit tests for CMFC Account:
+ 
+ 
+ Instructions on JUnit tests for CMFC Account:
   1. Download Account.zip from repository
   2. Unzip and open project in android studio.
   3. Navigate to app/src/test/java/com/
