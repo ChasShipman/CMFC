@@ -15,4 +15,5 @@
     <string name="nav_create">REPLACE_WITH_TICO</string>
     <string name="nav_user">TBD/DESIGN</string>
     <string name="nav_find">RECYCLER_VIEW</string>
+    <string name="logout">Logout</string>
 </resources>

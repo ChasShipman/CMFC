@@ -1,24 +1,32 @@
 package com.warbs.cmfclogin.Model;
 
 public class User {
-    private String username;
     private String password;
     private String email;
-   // private String name;
+    private String name;
+    private String UID;
     public User()
     {
 
     }
-    public User( String username, String password, String email)
+    public User(String name, String password, String email)
     {
-       //this.name = name;
-        this.username = username;
+       this.name = name;
+       // this.username = username;
         this.password = password;
         this.email = email;
 
 
     }
-    /*public String name()
+    public String getUID()
+    {
+        return UID;
+    }
+    public void setUID(String UID)
+    {
+        this.UID = UID;
+    }
+    public String getName()
     {
 
         return name;
@@ -26,8 +34,8 @@ public class User {
     public void setName(String name)
     {
         this.name = name;
-    }*/
-    public String getUsername()
+    }
+    /*public String getUsername()
     {
 
         return username;
@@ -36,7 +44,7 @@ public class User {
     {
         this.username = username;
     }
-    public String getPassword()
+    */public String getPassword()
     {
         return password;
     }

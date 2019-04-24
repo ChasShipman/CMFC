@@ -4,20 +4,69 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
+    android:background="#7A9E9F"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UserActivity">
 
-    <TextView
-        android:id="@+id/user_act"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
-        android:layout_marginLeft="@dimen/activity_horizontal_margin"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="@string/nav_user"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="0dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile"
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+
+            android:src="@drawable/user" />
+
+        <TextView
+            android:id="@+id/theName"
+            android:layout_width="337dp"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textColor="#FFFFFF"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/profile"
+            android:gravity="center"
+            android:layout_marginTop="5dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+          />
+
+        <TextView
+            android:id="@+id/instrument"
+            android:layout_width="337dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/theName"
+             android:gravity="center"
+            android:text="Instrument"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+
+
+            />
+
+        <TextView
+            android:id="@+id/experience"
+            android:layout_width="337dp"
+            android:layout_height="wrap_content"
+           android:layout_below="@id/instrument"
+            android:layout_centerHorizontal="true"
+
+            android:gravity="center"
+            android:text="Experience: "
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+    </RelativeLayout>
+
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
@@ -30,5 +79,10 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/navigation" />
+
+
+
+
+
 
 </android.support.constraint.ConstraintLayout>

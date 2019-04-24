@@ -15,6 +15,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,26 +29,27 @@ import com.google.firebase.database.ChildEventListener;
 import com.warbs.cmfclogin.Model.User;
 
 
-public class MainActivity extends AppCompatActivity {
-    FirebaseDatabase database;
-    DatabaseReference users;
-    EditText user, password;
+public class MainActivity extends AppCompatActivity implements  View.OnClickListener {
+
+    EditText email, password;
     CheckBox chk;
     TextView create;
     Button button;
+    FirebaseAuth auth;
 
     @Override
-
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        database = FirebaseDatabase.getInstance();
-        users = database.getReference("Users");
-        // auth = FirebaseAuth.getInstance();
 
-        user = (EditText) findViewById(R.id.editText2);
+        auth = FirebaseAuth.getInstance();
+        if(auth.getCurrentUser() != null)
+        {
+
+        }
+        email = (EditText) findViewById(R.id.editText2);
         password = (EditText) findViewById(R.id.pass);
 
         TextView link = (TextView) findViewById(R.id.link);
@@ -77,14 +82,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         button = (Button) findViewById(R.id.login);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn(user.getText().toString(),
-                        password.getText().toString());
+        button.setOnClickListener(this);
 
-            }
-        });
 
 
     }
@@ -100,49 +99,48 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void signIn(final String username, final String password)
+    private void login()
     {
-        if(TextUtils.isEmpty(username))
+        String Email = email.getText().toString().trim();
+        String Password = password.getText().toString().trim();
+        if(TextUtils.isEmpty(Email))
         {
-            Toast.makeText(getApplicationContext(), "Enter username!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Enter email!", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(password))
+        if(TextUtils.isEmpty(Password))
         {
             Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
             return;
         }
-        users.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.child(username).exists())
-                {
-                    if(!username.isEmpty())
-                    {
-                        User login = dataSnapshot.child(username).getValue(User.class);
-                        if(login.getPassword().equals(password))
+        if(Password.length() < 8)
+        {
+            Toast.makeText(getApplicationContext(), "Password must be at least 8 characters!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        auth.signInWithEmailAndPassword(Email, Password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful())
                         {
-                            Toast.makeText(MainActivity.this, "Login Success!", Toast.LENGTH_SHORT).show();
-                            Intent s = new Intent(getApplicationContext(), HomeActivity.class);
-                            startActivity(s);
-                        }
-                        else
-                        {
-                            Toast.makeText(MainActivity.this, "Password is wrong", Toast.LENGTH_SHORT).show();
+                            finish();
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         }
                     }
-                    else
-                    {
-                        Toast.makeText(MainActivity.this, "Username is Not Registered", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+                });
     }
 
+    @Override
+    public void onClick(View v) {
+        if(v ==button)
+        {
+            login();
+        }
+        if(v == create )
+        {
+            finish();
+            startActivity(new Intent(this, Account.class));
+        }
+    }
 }

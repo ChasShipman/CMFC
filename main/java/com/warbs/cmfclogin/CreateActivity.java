@@ -6,10 +6,35 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 public class CreateActivity extends AppCompatActivity {
+
+/*
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        WebView webView = (WebView) findViewById(R.id.webView);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.getSettings().setDomStorageEnabled(true);
+
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        webSettings.setLoadWithOverviewMode(true);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setDefaultTextEncodingName("utf-8");
+
+        webView.loadUrl("file:///android_asset/CMFC.html");
+
+    }*/
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -37,6 +62,14 @@ public class CreateActivity extends AppCompatActivity {
                     Intent intentUser = new Intent(CreateActivity.this, UserActivity.class);
                     startActivity(intentUser);
                     return true;
+                case R.id.navigation_logout:
+                    Intent intentLog = new Intent(CreateActivity.this, MainActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    intentLog.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentLog.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentLog);
+                    return true;
             }
             return false;
         }
@@ -46,11 +79,14 @@ public class CreateActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.create_activity);
-        TextView title = /*TextView)*/ findViewById(R.id.create_act);
+        TextView title = /*(TextView)*/ findViewById(R.id.create_act);
         title.setText(R.string.nav_create);
 
         BottomNavigationView navigation = /*(BottomNavigationView)*/ findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Menu menu = navigation.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
 
     }
 }

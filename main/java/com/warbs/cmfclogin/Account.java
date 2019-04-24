@@ -29,17 +29,20 @@ import com.google.firebase.database.ChildEventListener;
 import com.warbs.cmfclogin.Model.User;
 
 
-public class Account extends AppCompatActivity {
+public class Account extends AppCompatActivity implements View.OnClickListener {
 
     //creating the custom database name
-    DatabaseReference users;
+  //  DatabaseReference users;
     //the database
-    FirebaseDatabase database;
+    FirebaseAuth firebaseAuth;
+  //  FirebaseDatabase database;
     //variables use to take in email, username and password
-    EditText myEmail, myUser, myPass;
+    EditText myEmail, myPass;
     //button to store info in database
+   // String UID;
     Button buttonSignUp;
     //  private FirebaseAuth auth;
+    TextView login;
 
   //  EditText myName;
 
@@ -48,70 +51,84 @@ public class Account extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account);
-
-        database = FirebaseDatabase.getInstance();
-        users = database.getReference().child("Users");
-        myUser = (EditText) findViewById(R.id.myUser);
+        firebaseAuth = FirebaseAuth.getInstance();
+     //   database = FirebaseDatabase.getInstance();
+      //  users = database.getReference().child("Users");
+        login = (TextView) findViewById(R.id.Login);
         //myName = (EditText) findViewById(R.id.myName);
         myPass = (EditText) findViewById(R.id.myPass);
         myEmail = (EditText) findViewById(R.id.myEmail);
+       // myName = (EditText) findViewById(R.id.name);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openLogin();
+            }
+        });
 
         buttonSignUp = (Button) findViewById(R.id.signUP);
 
-        buttonSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = myEmail.getText().toString().trim();
-                String password = myPass.getText().toString().trim();
-               // String name = myName.getText().toString().trim();
-                String username = myUser.getText().toString().trim();
+        buttonSignUp.setOnClickListener(this);
 
-                if(TextUtils.isEmpty(username))
-                {
-                    Toast.makeText(getApplicationContext(), "Enter username!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(email))
-                {
-                    Toast.makeText(getApplicationContext(), "Enter email!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password))
-                {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(password.length() < 8)
-                {
-                    Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                final User user = new User(myUser.getText().toString(),
-                        myPass.getText().toString(),
-                        myEmail.getText().toString());
-                users.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child(user.getUsername()).exists())
-                        {
-                            Toast.makeText(Account.this, "Username already exists!", Toast.LENGTH_SHORT).show();
-                        }
 
-                        else
-                        {
-                            users.child(user.getUsername()).setValue(user);
-                            Toast.makeText(Account.this, "Success", Toast.LENGTH_SHORT).show();
-                            Intent s = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(s);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-            }
-        });
     }
+    private void register()
+    {
+        String email = myEmail.getText().toString().trim();
+        String password = myPass.getText().toString().trim();
+       // String name = myName.getText().toString().trim();
+       /* if(TextUtils.isEmpty(name))
+        {
+            Toast.makeText(getApplicationContext(), "Enter name!", Toast.LENGTH_SHORT).show();
+            return;
+        }*/
+        if(TextUtils.isEmpty(email))
+        {
+            Toast.makeText(getApplicationContext(), "Enter email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(TextUtils.isEmpty(password))
+        {
+            Toast.makeText(getApplicationContext(), "Enter password!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else if(password.length() < 8)
+        {
+            Toast.makeText(getApplicationContext(), "Password must be at least 8 characters!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        else
+        {
+            firebaseAuth.createUserWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful())
+                            {
+                                openLogin();
+                                Toast.makeText(Account.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Account.this, setUp.class);
+                                startActivity(intent);
+                            }
+                        }
+                    });
+        }
+
+
+
+
+
+
+    }
+    @Override
+    public void onClick(View view)
+    {
+        register();
+    }
+    public void openLogin()
+    {
+        Intent intent = new Intent(Account.this, setUp.class);
+        startActivity(intent);
+    }
+
 }

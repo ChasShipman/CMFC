@@ -5,13 +5,29 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.DefaultItemAnimator;
+
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.warbs.cmfclogin.Model.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
-
-    //private TextView mTextMessage;
-
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private List<Composition> compList = new ArrayList<>();
+    private int[] images = {R.drawable.lennon, R.drawable.lusth, R.drawable.bruno, R.drawable.havana, R.drawable.high};
+    private RecyclerAdapter adapter;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -37,6 +53,14 @@ public class HomeActivity extends AppCompatActivity {
                     Intent intentUser = new Intent(HomeActivity.this, UserActivity.class);
                     startActivity(intentUser);
                     return true;
+                case R.id.navigation_logout:
+                    Intent intentLog = new Intent(HomeActivity.this, MainActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    finish();
+                    intentLog.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intentLog.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intentLog);
+                    return true;
             }
             return false;
         }
@@ -46,11 +70,38 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        TextView title = /*(TextView)*/ findViewById(R.id.message);
-        title.setText(R.string.nav_home);
-        //zmTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = /*(BottomNavigationView)*/ findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        Menu menu = navigation.getMenu();
+        MenuItem menuItem = menu.getItem(0);
+        menuItem.setChecked(true);
+        recyclerView = findViewById(R.id.rvComp);
+        layoutManager = new GridLayoutManager(this, 3);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new RecyclerAdapter(images);
+        recyclerView.setAdapter(adapter);
+        prepareMovieData();
+            //private TextView mTextMessage;
+        //zmTextMessage = (TextView) findViewById(R.id.message);
+
     }
+        private void prepareMovieData()
+    {
+            Composition comp = new Composition("Crippled Inside", "04-03-19");//, "04-01-19");
+            compList.add(comp);
+
+            Composition comp1 = new Composition("CS 403 Inspiration Song", "04-03-19");//, "04-01-19");
+            compList.add(comp1);
+
+            Composition comp2 = new Composition("24k Magic", "04-03-19");//, "04-01-19");
+            compList.add(comp2);
+
+            Composition comp3 = new Composition("Havana", "04-03-19");//, "04-01-19");
+            compList.add(comp3);
+
+            Composition comp0 = new Composition("High Hopes", "04-03-19");//, "04-01-19");
+            compList.add(comp0);
+        }
 
 }
