@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "735225211901",
+    "firebase_url": "https://cmfc-9bdf2.firebaseio.com",
+    "project_id": "cmfc-9bdf2",
+    "storage_bucket": "cmfc-9bdf2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735225211901:android:1eb26c68544ac3dd",
+        "android_client_info": {
+          "package_name": "com.warbs.cmfclogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735225211901-bfjbvgrb0pkrv7lapnkktq2uet7k20ou.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.warbs.cmfclogin",
+            "certificate_hash": "5a44d1233600bff767f869af6b637bef1357031d"
+          }
+        },
+        {
+          "client_id": "735225211901-ie75dgu2l4vof0fhu3tgmfspq0csi0k8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_AUge5DqBL_IRtY1Yaw9AgmeotmYBhNw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735225211901-ie75dgu2l4vof0fhu3tgmfspq0csi0k8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
