@@ -1,6 +1,9 @@
 # CMFC
 #
-
+#
+# If the user would like to download the full app 
+# Please download the full directory and only keep the folder labeled: MASTER_DOWNLOAD
+# 
 # SPRINT 3 README INSTRUCTIONS:
 
        
@@ -20,7 +23,7 @@
           3. Build: Build Bundle
           4. Build: Rebuild Project
           
-  # If the user would like to download the full app please follow this google drive link and download the complete app package
+ 
           
           
 
